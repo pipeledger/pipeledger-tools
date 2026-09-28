@@ -7,6 +7,8 @@ Email **support@pipeledger.ai** with the subject line "Security report".
 Please do not open a public issue, and do not post details anywhere public
 before PipeLedger has had a chance to respond.
 
+PipeLedger Communication Hub inside app.pipeledger.ai is available for customers with daily response times
+
 Include:
 
 - what you found and where (the CLI, the MCP endpoint, the web application,
