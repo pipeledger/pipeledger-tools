@@ -11,8 +11,8 @@ Statements, compare reporting periods, and trace a reported figure to its
 supporting General Ledger detail. Financial results come from approved,
 published data, and access rules are enforced on every request.
 
-The same capabilities are available from a terminal or a script through the
-`pl` command-line client and the REST API.
+The same capabilities are available to automation through the `pl`
+command-line client and the REST API.
 
 The tools are free to install and licensed under Apache-2.0. Access to
 organization data requires a PipeLedger subscription and authorization from
@@ -36,20 +36,72 @@ Requests an AI agent can complete:
 - "Show the definition and the publication evidence behind these financial
   metrics."
 
-| Report | Period | Comparison |
-|---|---|---|
-| Income Statement | A fiscal year | Another fiscal year |
-| Cash Flow Statement | A fiscal year | Another fiscal year |
-| Balance Sheet | A month-end | Another month-end |
-| Metrics Report | Set by the metrics chosen | Set by the metrics chosen |
+| Report | Period | Comparison | Built from |
+|---|---|---|---|
+| Income Statement | A fiscal year | Another fiscal year | General Ledger Lines |
+| Balance Sheet | A month-end | Another month-end | Trial Balance |
+| Cash Flow Statement | A fiscal year | Another fiscal year | Cash Flow Components |
+| Metrics Report | Set by the metrics selected | Set by the metrics selected | The source of each selected metric |
+
+The first three are financial statements. A Metrics Report is an ordered
+selection of governed metrics that you choose, one line per metric, and is
+not a financial statement.
 
 A question about a single month or quarter is answered from the General
 Ledger through a query. How far a figure can be traced depends on the
 report, the level of detail, and the permissions of the connection.
 
-The tools support month-end reporting and provide reconciliation evidence
-for review. They read and report. They do not close the books, post
-journals to the ERP, or initiate payments.
+The tools read and report. They do not close the books, post journals to
+the ERP, or initiate payments.
+
+## What it gives a controller
+
+**Review through the month, not only at month-end.** A continuous close
+depends on current, checked data. Each refresh brings the published ledger
+up to date and runs the financial checks again. An agent can produce the
+statements, compare them with the prior period, and follow any figure that
+moved back to its entries. After a correction in the ERP, a refresh on
+request shows it the same day. PipeLedger supplies the data and the evidence
+for the review. It does not manage close tasks or close the books.
+
+**Hand your accountant the evidence for a correction.** When a review finds
+an entry that is misclassified or missing, an agent can assemble what the
+correction needs: the affected ledger lines, their amounts, the account each
+posted to, and how that account is classified. Account classifications are
+GAAP-anchored and reviewed by your controller. Your accountant decides the
+treatment and posts the entry in the ERP. The tools do not post to the ERP.
+
+**One view across entities and systems.** PipeLedger consolidates financial
+data from NetSuite and QuickBooks Online for reporting by Legal Entity and
+across the group. Approved mappings combine the records of the same legal
+company from different systems under one reporting identity. A report can
+cover one Legal Entity or every authorized entity, on a consistent currency
+and accounting-book basis. Dedicated, correctly tagged intercompany accounts
+can be excluded to analyze external revenue, costs, and debt. PipeLedger does
+not post elimination journals or automate complex statutory consolidation
+adjustments.
+
+## Financial datasets
+
+The tools work with a set of financial datasets prepared from your General
+Ledger.
+
+| Dataset | One row is |
+|---|---|
+| General Ledger Lines | One accounting line, with its account, business segments, and source reference |
+| Trial Balance | One account in one period, with its balance at month-end |
+| Chart of Accounts | One account, and how it is classified for reporting |
+| Cash Flow Components | One component of the cash-flow calculation |
+| Project Overview | One project in one period |
+| Project Financial Position | One project account in one period, with its balance |
+| Unit Movements | One signed quantity movement |
+| Unit Roll-forward | One unit metric in one period: opening, movements, closing |
+
+The core datasets are the foundation. Cash flow, projects, and units are
+data products that are enabled for each organization, and each connection
+sees only the datasets it has been granted. See
+[Financial datasets](https://pipeledger.ai/docs/financial-datasets) for
+what each one contains, including the datasets delivered to BI tools.
 
 ## What you need
 
@@ -76,7 +128,8 @@ is not active in that terminal; do not install the suggested package.
 or Admin creates the credential under **Access control > Service credentials**
 and chooses its role, tools, data sources, and clearance.
 
-For scripts and agents, pipe the credential from a file or a secret manager:
+For automation and AI agents, pipe the credential from a file or a secret
+manager:
 
 ```bash
 pl login --stdin < credential.txt
@@ -227,6 +280,7 @@ service, its data pipeline, and its ERP connectors are not open source.
 
 ## Documentation
 
+- [Financial datasets](https://pipeledger.ai/docs/financial-datasets): what each dataset contains and the reports built from them
 - [Tool Guide](https://pipeledger.ai/docs/tool-guide): every capability, with inputs, returned evidence, and example prompts
 - [MCP server](https://pipeledger.ai/docs/mcp): endpoint, authentication, and permission boundaries
 - [OAuth connection](https://pipeledger.ai/docs/oauth-mcp-setup): connect a host and troubleshoot authorization
