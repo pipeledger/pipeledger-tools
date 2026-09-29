@@ -4,12 +4,18 @@ Financial reporting for AI agents, through a finance MCP server and a
 command-line client. Open-source tools and connection guides for
 [PipeLedger](https://pipeledger.ai), a hosted financial data platform.
 
+This repository contains connection guides, examples, and MCP Registry
+metadata. Install the Apache-2.0-licensed CLI from npm; its development
+source tree is not hosted here. The PipeLedger service, pipeline, and ERP
+connectors remain private.
+
 PipeLedger gives AI agents governed access to financial data from NetSuite
 and QuickBooks Online through a hosted Model Context Protocol (MCP) server.
 Agents can retrieve Income Statements, Balance Sheets, and Cash Flow
 Statements, compare reporting periods, and trace a reported figure to its
-supporting General Ledger detail. Financial results come from approved,
-published data, and access rules are enforced on every request.
+supporting General Ledger detail. Financial results come from published
+data, which is data that has passed the required checks and been approved
+for delivery. Access rules are enforced on every request.
 
 The same capabilities are available to automation through the `pl`
 command-line client and the REST API.
@@ -50,6 +56,11 @@ not a financial statement.
 A question about a single month or quarter is answered from the General
 Ledger through a query. How far a figure can be traced depends on the
 report, the level of detail, and the permissions of the connection.
+
+Financial queries and reports use approved, published data. Separately
+authorized management tools can request pipeline runs and make permitted
+changes within PipeLedger. The tools do not post journals to the ERP or
+initiate payments.
 
 ## What it gives a controller
 
@@ -97,19 +108,19 @@ statutory consolidation adjustments remain outside its tool boundary.
 
 ## Financial datasets
 
-The tools work with a set of financial datasets prepared from your General
-Ledger.
+Available datasets include financial data prepared from your ERP and unit
+data maintained through the Unit Register.
 
-| Dataset | One row is |
+| Dataset | What it contains |
 |---|---|
-| General Ledger Lines | One accounting line, with its account, business segments, and source reference |
-| Trial Balance | One account in one period, with its balance at month-end |
-| Chart of Accounts | One account, and how it is classified for reporting |
-| Cash Flow Components | One component of the cash-flow calculation |
-| Project Overview | One project in one period |
-| Project Financial Position | One project account in one period, with its balance |
-| Unit Movements | One signed quantity movement |
-| Unit Roll-forward | One unit metric in one period: opening, movements, closing |
+| General Ledger Lines | Accounting lines with their account, business segments, and source reference |
+| Trial Balance | Account balances by reporting period |
+| Chart of Accounts | Accounts and how each is classified for reporting |
+| Cash Flow Components | The components behind the Cash Flow Statement |
+| Project Overview | Project financial activity and performance by period |
+| Project Financial Position | Project balances, such as capitalized costs and deposits, by period |
+| Unit Movements | Quantity movements by type, without amounts |
+| Unit Roll-forward | Opening quantities, movements, and closing quantities |
 
 The core datasets are the foundation. Cash flow, projects, and units are
 data products that are enabled for each organization, and each connection
@@ -135,8 +146,9 @@ pl --version
 pl login
 ```
 
-If your system suggests installing a different package to get `pl`, Node.js
-is not active in that terminal; do not install the suggested package.
+If `pl` is not found after installing, the CLI is not installed for the
+active Node.js version, or npm's executable directory is not on your `PATH`.
+Do not install a different package that your system suggests for `pl`.
 
 `pl login` prompts for a service credential and hides what you paste. An Owner
 or Admin creates the credential under **Access control > Service credentials**
@@ -155,8 +167,8 @@ are saved in shell history.
 ## First result
 
 These four steps take a new credential to a financial statement and the
-transactions behind one of its lines. The sample output uses invented figures
-for a fictional company.
+transactions behind one of its lines. The sample output is illustrative: it
+uses invented figures for a fictional company, and some columns are trimmed.
 
 ### 1. Confirm who you are and what you can see
 
@@ -223,7 +235,8 @@ It never means that financial data is accessible on the internet.
 pl report income-statement --fiscal-year FY2025
 ```
 
-Excerpt of the output, through Operating Income:
+Illustrative excerpt, through Operating Income. Replace `FY2025` with a
+fiscal year your organization has published:
 
 ```text
 Income Statement - Riverside Lumber Co.
@@ -248,7 +261,8 @@ Operating Income
 
 ### 4. Drill into a figure
 
-Run the same report as JSON. Each line carries a `drilldown_handle`.
+Run the same report as JSON. Lines that can be traced carry a
+`drilldown_handle`.
 
 ```bash
 pl report income-statement --fiscal-year FY2025 --format json > income-statement.json
@@ -258,8 +272,11 @@ The JSON response also includes the publication each figure came from, the
 catalog version and definition hash behind each line, a certification
 summary, and any caveats.
 
-Copy the `drilldown_handle` of the line you want from `sections[].lines[]`
-and pass it exactly as issued:
+Find the Revenue line in `sections[].lines[]`. If it includes a
+`drilldown_handle` and lists `transaction_line` in `supported_target_grains`,
+copy that handle into the command below, exactly as issued. Other figures may
+offer different supporting detail or require you to inspect their components
+first.
 
 ```bash
 pl drilldown "<handle>" --grain transaction_line --limit 20
@@ -277,20 +294,20 @@ The full command reference is on the
 The CLI and the MCP connection are clients. They send requests and show the
 answers.
 
-| Runs in the PipeLedger service | Runs on your machine |
+| Runs in the PipeLedger service | Runs on your side |
 |---|---|
 | Access rules, clearance, and identity privacy | Building the request |
-| Validation of every request | Storing your credential in a file only you can read |
-| Financial calculations and statements | Formatting the response |
-| Audit records | |
+| Validation of every request | Formatting the response |
+| Financial calculations and statements | CLI: your service credential, stored in a file only you can read |
+| Audit records | MCP: the sign-in connection, held by your AI assistant. No PipeLedger credential is copied into it |
 
 A client cannot do more than its credential allows, and an AI assistant can
 interpret the figures but cannot change them. Financial queries and reports
 use published data; management commands follow their own permissions and
 approval rules.
 
-This repository holds the tools' documentation and license. The PipeLedger
-service, its data pipeline, and its ERP connectors are not open source.
+The PipeLedger service, its data pipeline, and its ERP connectors are not
+open source.
 
 ## Documentation
 
