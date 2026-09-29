@@ -77,10 +77,10 @@ the supporting detail available to your connection. After your team corrects
 the source records, refresh, validate, and publish the updated data, then
 review the effect on the reported results.
 
-**An expert accountant on call, working from your own books.** Ask how a
-transaction should be treated and get two answers side by side: what
-accounting guidance says, and how your books have handled the same situation
-before. An agent searches years of ledger history in seconds, finds similar
+**An expert accountant or group controller on call, working from your own
+books.** Ask how a transaction should be treated and get two answers side by
+side: what accounting guidance says, and how your books have handled the same
+situation before. An agent searches years of ledger history in seconds, finds similar
 entries, and spots the ones that were booked differently. Analysis that used
 to mean exports and an afternoon of filtering becomes a question and an
 answer, with the ledger lines attached. The guidance comes from your AI
