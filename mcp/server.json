@@ -1,0 +1,33 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "ai.pipeledger/pipeledger",
+  "title": "PipeLedger",
+  "description": "Governed financial statements, metrics, and General Ledger detail from QuickBooks and NetSuite.",
+  "version": "0.1.0",
+  "websiteUrl": "https://pipeledger.ai/docs/mcp",
+  "icons": [
+    {
+      "src": "https://pipeledger.ai/brand/icon-256.png",
+      "mimeType": "image/png",
+      "sizes": ["256x256"]
+    },
+    {
+      "src": "https://pipeledger.ai/brand/icon-light-symbol.svg",
+      "mimeType": "image/svg+xml",
+      "sizes": ["any"],
+      "theme": "light"
+    },
+    {
+      "src": "https://pipeledger.ai/brand/icon-dark-symbol.svg",
+      "mimeType": "image/svg+xml",
+      "sizes": ["any"],
+      "theme": "dark"
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.pipeledger.ai/mcp"
+    }
+  ]
+}
