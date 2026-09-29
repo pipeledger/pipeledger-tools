@@ -53,9 +53,11 @@ report, the level of detail, and the permissions of the connection.
 
 ## What it gives a controller
 
-Give your AI agents the financial data and supporting evidence to help
-investigate changes, prepare corrections for review, and explain results
-across the business.
+Give a controller the reach of a seasoned group controller. An AI agent
+working from your published books can answer the questions that usually take
+years across the business to answer: how each entity treats a transaction,
+where treatments differ, and what changed since the last period. Experience
+still has to be earned. The visibility no longer does.
 
 **Investigate issues before month-end.** Support a continuous-close approach
 with financial review throughout the month. Ask an agent to investigate
@@ -64,12 +66,15 @@ the supporting detail available to your connection. After your team corrects
 the source records, refresh, validate, and publish the updated data, then
 review the effect on the reported results.
 
-**Turn discrepancies into evidence for a correction.** Move from "this number
-looks wrong" to the ledger lines, account classifications, and report
-definitions that help explain it. An agent can assemble the available
-evidence for your accounting team to review the proposed treatment. You
-retain the accounting judgment, and your team posts approved corrections in
-the ERP.
+**An expert accountant on call, working from your own books.** Ask how a
+transaction should be treated and get two answers side by side: what
+accounting guidance says, and how your books have handled the same situation
+before. An agent searches years of ledger history in seconds, finds similar
+entries, and spots the ones that were booked differently. Analysis that used
+to mean exports and an afternoon of filtering becomes a question and an
+answer, with the ledger lines attached. The guidance comes from your AI
+assistant and the evidence comes from your books. You make the accounting
+decision, and your team posts it in the ERP.
 
 **Compare entities on a consistent reporting basis.** Bring NetSuite and
 QuickBooks Online financial data into a shared reporting structure. Review
