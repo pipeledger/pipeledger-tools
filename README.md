@@ -51,35 +51,44 @@ A question about a single month or quarter is answered from the General
 Ledger through a query. How far a figure can be traced depends on the
 report, the level of detail, and the permissions of the connection.
 
-The tools read and report. They do not close the books, post journals to
-the ERP, or initiate payments.
-
 ## What it gives a controller
 
-**Review through the month, not only at month-end.** A continuous close
-depends on current, checked data. Each refresh brings the published ledger
-up to date and runs the financial checks again. An agent can produce the
-statements, compare them with the prior period, and follow any figure that
-moved back to its entries. After a correction in the ERP, a refresh on
-request shows it the same day. PipeLedger supplies the data and the evidence
-for the review. It does not manage close tasks or close the books.
+Give your AI agents the financial data and supporting evidence to help
+investigate changes, prepare corrections for review, and explain results
+across the business.
 
-**Hand your accountant the evidence for a correction.** When a review finds
-an entry that is misclassified or missing, an agent can assemble what the
-correction needs: the affected ledger lines, their amounts, the account each
-posted to, and how that account is classified. Account classifications are
-GAAP-anchored and reviewed by your controller. Your accountant decides the
-treatment and posts the entry in the ERP. The tools do not post to the ERP.
+**Investigate issues before month-end.** Support a continuous-close approach
+with financial review throughout the month. Ask an agent to investigate
+changes in revenue, expenses, or balances using published financial data and
+the supporting detail available to your connection. After your team corrects
+the source records, refresh, validate, and publish the updated data, then
+review the effect on the reported results.
 
-**One view across entities and systems.** PipeLedger consolidates financial
-data from NetSuite and QuickBooks Online for reporting by Legal Entity and
-across the group. Approved mappings combine the records of the same legal
-company from different systems under one reporting identity. A report can
-cover one Legal Entity or every authorized entity, on a consistent currency
-and accounting-book basis. Dedicated, correctly tagged intercompany accounts
-can be excluded to analyze external revenue, costs, and debt. PipeLedger does
-not post elimination journals or automate complex statutory consolidation
-adjustments.
+**Turn discrepancies into evidence for a correction.** Move from "this number
+looks wrong" to the ledger lines, account classifications, and report
+definitions that help explain it. An agent can assemble the available
+evidence for your accounting team to review the proposed treatment. You
+retain the accounting judgment, and your team posts approved corrections in
+the ERP.
+
+**Compare entities on a consistent reporting basis.** Bring NetSuite and
+QuickBooks Online financial data into a shared reporting structure. Review
+one Legal Entity or all authorized entities using approved mappings and a
+consistent currency and accounting-book basis. Investigate differences
+between companies with the source references retained, reducing the need to
+rebuild that context from separate exports. Dedicated, correctly tagged
+intercompany accounts can be excluded to analyze external revenue, costs, and
+debt.
+
+**Delegate financial analysis with defined access.** Give an agent access to
+the entities, datasets, and financial detail its work requires. PipeLedger
+calculates the reported values and enforces the connection's permissions on
+every request. Your team can delegate investigation while retaining control
+over access and accounting decisions.
+
+PipeLedger supports financial review and reporting. Close-task management,
+ERP journal posting, payment initiation, elimination journals, and complex
+statutory consolidation adjustments remain outside its tool boundary.
 
 ## Financial datasets
 
