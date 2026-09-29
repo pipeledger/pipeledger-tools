@@ -1,9 +1,11 @@
 # Connect an AI assistant to PipeLedger
 
-PipeLedger runs a remote MCP (Model Context Protocol) server. Add it to an AI
-assistant that supports remote MCP servers, and the assistant can retrieve
-financial statements, metrics, and General Ledger detail from your
-organization's published data.
+PipeLedger runs a hosted finance MCP (Model Context Protocol) server for
+NetSuite and QuickBooks Online data. Add it to an AI assistant that supports
+remote MCP servers, and the assistant can retrieve Income Statements,
+Balance Sheets, and Cash Flow Statements, compare reporting periods, and
+trace a reported figure to its supporting General Ledger detail, all from
+your organization's published data.
 
 | | |
 |---|---|
@@ -42,6 +44,16 @@ can access.
 ```text
 Show me the Income Statement for fiscal year 2025, then show the
 transactions behind the revenue line.
+```
+
+```text
+Compare this fiscal year's Income Statement with the prior fiscal year and
+show the largest changes in operating expenses.
+```
+
+```text
+Retrieve the Cash Flow Statement and break down capital expenditures by
+month.
 ```
 
 ## What the assistant can and cannot do

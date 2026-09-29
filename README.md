@@ -1,12 +1,18 @@
 # PipeLedger tools
 
-Open-source tools and connection guides for [PipeLedger](https://pipeledger.ai),
-a hosted financial data platform.
+Financial reporting for AI agents, through a finance MCP server and a
+command-line client. Open-source tools and connection guides for
+[PipeLedger](https://pipeledger.ai), a hosted financial data platform.
 
-PipeLedger extracts General Ledger data from QuickBooks Online and NetSuite,
-transforms it into tested financial data in a managed warehouse, and delivers
-approved results to people and AI agents. These tools are how you reach that
-data from a terminal or an AI assistant.
+PipeLedger gives AI agents governed access to financial data from NetSuite
+and QuickBooks Online through a hosted Model Context Protocol (MCP) server.
+Agents can retrieve Income Statements, Balance Sheets, and Cash Flow
+Statements, compare reporting periods, and trace a reported figure to its
+supporting General Ledger detail. Financial results come from approved,
+published data, and access rules are enforced on every request.
+
+The same capabilities are available from a terminal or a script through the
+`pl` command-line client and the REST API.
 
 The tools are free to install and licensed under Apache-2.0. Access to
 organization data requires a PipeLedger subscription and authorization from
@@ -16,6 +22,34 @@ that organization's Owner or Admin.
 |---|---|---|
 | Command-line client (`pl`) | Retrieve financial statements, metrics, and General Ledger detail, inspect publication evidence, and perform permitted management actions | [Install the CLI](#install-the-cli) |
 | MCP server connection | Let an AI assistant such as Claude or ChatGPT work with your published financial data | [Connect an AI assistant](mcp/README.md) |
+
+## Finance workflows
+
+Requests an AI agent can complete:
+
+- "Compare this fiscal year's Income Statement with the prior fiscal year
+  and show the largest changes in operating expenses."
+- "Show the Balance Sheet as of the latest month-end and the account
+  balances behind the cash line."
+- "Retrieve the Cash Flow Statement and break down capital expenditures by
+  month."
+- "Show the definition and the publication evidence behind these financial
+  metrics."
+
+| Report | Period | Comparison |
+|---|---|---|
+| Income Statement | A fiscal year | Another fiscal year |
+| Cash Flow Statement | A fiscal year | Another fiscal year |
+| Balance Sheet | A month-end | Another month-end |
+| Metrics Report | Set by the metrics chosen | Set by the metrics chosen |
+
+A question about a single month or quarter is answered from the General
+Ledger through a query. How far a figure can be traced depends on the
+report, the level of detail, and the permissions of the connection.
+
+The tools support month-end reporting and provide reconciliation evidence
+for review. They read and report. They do not close the books, post
+journals to the ERP, or initiate payments.
 
 ## What you need
 
@@ -203,6 +237,7 @@ service, its data pipeline, and its ERP connectors are not open source.
 
 - Help with the tools: see [SUPPORT.md](SUPPORT.md)
 - Reporting a vulnerability: see [SECURITY.md](SECURITY.md)
+- Corrections to these documents: see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 

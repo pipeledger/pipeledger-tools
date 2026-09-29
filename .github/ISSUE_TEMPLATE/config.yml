@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Account, billing, or data questions
+    url: https://pipeledger.ai/support
+    about: Questions about your organization, access, or results cannot be answered in public.
+  - name: Report a vulnerability
+    url: https://github.com/pipeledger/pipeledger-tools/blob/main/SECURITY.md
+    about: Please report security issues privately, not as a public issue.
