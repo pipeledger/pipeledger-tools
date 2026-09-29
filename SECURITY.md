@@ -7,7 +7,10 @@ Email **support@pipeledger.ai** with the subject line "Security report".
 Please do not open a public issue, and do not post details anywhere public
 before PipeLedger has had a chance to respond.
 
-PipeLedger Communication Hub inside app.pipeledger.ai is available for customers with daily response times
+Customers can also use the Communication Hub inside app.pipeledger.ai.
+
+PipeLedger targets an initial response within one business day. That is a
+target for the first reply, not a commitment to a resolution time.
 
 Include:
 
@@ -20,8 +23,7 @@ Do not include credentials, tokens, or financial records in the report. If a
 credential may have been exposed, ask an Owner or Admin to revoke it in
 PipeLedger first.
 
-Reports are tracked for triage. This page does not establish a response-time
-commitment. PipeLedger's security posture is described at
+Reports are tracked for triage. PipeLedger's security posture is described at
 <https://pipeledger.ai/trust>.
 
 ## Testing
