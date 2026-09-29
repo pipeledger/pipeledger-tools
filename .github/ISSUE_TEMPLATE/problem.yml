@@ -1,0 +1,44 @@
+name: Report a problem
+description: A problem installing or running the CLI, or a guide that did not work as written
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **This repository is public.** Do not include a credential, a token, financial records, account names, or customer and vendor names.
+
+        For help with your account or your organization's data, write to support@pipeledger.ai instead.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: The command you ran or the guide step you followed, and what you saw.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: cli-version
+    attributes:
+      label: CLI version
+      description: The output of `pl --version`, if this is about the CLI.
+  - type: input
+    id: environment
+    attributes:
+      label: Node.js version and operating system
+      description: The output of `node -v`, and your operating system.
+  - type: input
+    id: reference
+    attributes:
+      label: Error code and reference
+      description: The `code` and `correlation_id` from the error, if there was one. The reference lets PipeLedger find the request without you sharing its contents.
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before submitting
+      options:
+        - label: This report contains no credentials and no financial data.
+          required: true
