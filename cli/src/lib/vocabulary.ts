@@ -29,6 +29,7 @@ export const MART_PACKAGE_NAMES = [
   "units",
   "business_intelligence",
   "cash_flow",
+  "entity_context",
 ] as const;
 
 export const CASH_FLOW_CATEGORY_NAMES = [

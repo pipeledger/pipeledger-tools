@@ -75,7 +75,37 @@ export interface ServingPublication {
 }
 
 export interface ResolveResponse {
-  action: "search" | "list" | "review";
+  action: "search" | "list" | "review" | "context";
+  entity_context?: {
+    entries: Array<{
+      business_identity_id: string;
+      display_name: string;
+      identity_kind: string;
+      profiles: Array<{
+        legal_form: string | null;
+        tax_classification: string | null;
+        tax_regime?: string | null;
+        tax_jurisdiction_country_code?: string | null;
+        effective_from?: string | null;
+        effective_to?: string | null;
+      }>;
+      owners: Array<{
+        owner_display_name: string;
+        ownership_share: string;
+        effective_from: string | null;
+        effective_to: string | null;
+      }>;
+      memberships: Array<{
+        group_name: string;
+        effective_from: string | null;
+        effective_to: string | null;
+      }>;
+    }>;
+    next_cursor?: string;
+    as_of?: string | null;
+    period?: { start: string; end: string } | null;
+    source_directory_publication_run_id?: string;
+  };
   query: string;
   catalog_version: string | null;
   resolver_version: string;
@@ -127,27 +157,33 @@ export interface ResolveOptions {
   businessIdentityStates?: string;
   sourceErps?: string;
   evidenceBasisQuery?: string;
+  context?: string;
 }
 
 function commaList(value: string | undefined): string[] {
   return value
-    ? [...new Set(value.split(",").map((item) => item.trim()).filter(Boolean))]
+    ? [
+        ...new Set(
+          value
+            .split(",")
+            .map((item) => item.trim())
+            .filter(Boolean),
+        ),
+      ]
     : [];
 }
 
 /** The request body, identical in shape to the MCP tool input. */
 export function buildResolveRequestBody(
   query: string | undefined,
-  opts: Omit<ResolveOptions, "format">
+  opts: Omit<ResolveOptions, "format">,
 ): Record<string, unknown> {
   const reviewFilters = {
     availability_states: commaList(opts.availabilityStates),
     activity_evidence_states: commaList(opts.activityEvidenceStates),
     governed_role_states: commaList(opts.governedRoleStates),
     governed_roles: commaList(opts.governedRoles),
-    advisory_role_evidence_states: commaList(
-      opts.advisoryRoleEvidenceStates
-    ),
+    advisory_role_evidence_states: commaList(opts.advisoryRoleEvidenceStates),
     advisory_roles: commaList(opts.advisoryRoles),
     business_identity_states: commaList(opts.businessIdentityStates),
     source_erps: commaList(opts.sourceErps),
@@ -156,7 +192,7 @@ export function buildResolveRequestBody(
       : {}),
   };
   const hasReviewFilters = Object.values(reviewFilters).some((value) =>
-    Array.isArray(value) ? value.length > 0 : Boolean(value)
+    Array.isArray(value) ? value.length > 0 : Boolean(value),
   );
   return {
     object_type: opts.objectType,
@@ -165,6 +201,7 @@ export function buildResolveRequestBody(
     limit: opts.limit,
     ...(opts.cursor ? { cursor: opts.cursor } : {}),
     ...(hasReviewFilters ? { review_filters: reviewFilters } : {}),
+    ...(opts.context ? { context: JSON.parse(opts.context) as unknown } : {}),
   };
 }
 
@@ -191,11 +228,11 @@ export function formatBlockedNotice(data: ResolveResponse): string | null {
  * is the one door that never sees which publication was read.
  */
 export function formatServingPublicationNotice(
-  publication: ServingPublication | null | undefined
+  publication: ServingPublication | null | undefined,
 ): string | null {
   if (!publication) return null;
   return (
-    `Business Object Directory publication: ${publication.run_id}, ` +
+    `${publication.mart === "entity_context" ? "Entity Context" : "Business Object Directory"} publication: ${publication.run_id}, ` +
     `published ${publication.published_at}, ` +
     `${publication.release_channel} channel.`
   );
@@ -203,8 +240,39 @@ export function formatServingPublicationNotice(
 
 /** Directory listings and searches render different columns. */
 export function toResolveDisplayRows(
-  data: ResolveResponse
+  data: ResolveResponse,
 ): Array<Record<string, string | number>> {
+  if (data.action === "context") {
+    const interval = (row: {
+      effective_from?: string | null;
+      effective_to?: string | null;
+    }) => `[${row.effective_from ?? "unknown"}, ${row.effective_to ?? "open"})`;
+    return (data.entity_context?.entries ?? []).map((entry) => ({
+      identity_id: entry.business_identity_id,
+      company: entry.display_name,
+      identity_kind: entry.identity_kind,
+      legal_profiles:
+        entry.profiles
+          .map(
+            (profile) =>
+              `${profile.legal_form ?? "Unknown legal form"}; ${profile.tax_classification ?? "Unknown tax classification"}${profile.tax_regime ? ` (${profile.tax_jurisdiction_country_code ?? "Unknown jurisdiction"}: ${profile.tax_regime})` : ""} ${interval(profile)}`,
+          )
+          .join("; ") || "No dated classification recorded",
+      owners:
+        entry.owners
+          .map(
+            (owner) =>
+              `${owner.owner_display_name}: ${owner.ownership_share} fraction ${interval(owner)}`,
+          )
+          .join("; ") || "None recorded",
+      groups:
+        entry.memberships
+          .map(
+            (membership) => `${membership.group_name} ${interval(membership)}`,
+          )
+          .join("; ") || "None recorded",
+    }));
+  }
   if (data.action === "list") {
     return data.directory_entries.map((entry) => ({
       label: entry.display_label,
@@ -264,49 +332,104 @@ export function formatReviewPage(data: ResolveResponse): string | null {
   );
 }
 
+/** Keep requested context dates distinct from each published assertion interval. */
+export function formatEntityContextNotice(
+  data: ResolveResponse,
+): string | null {
+  if (data.action !== "context" || !data.entity_context) return null;
+  const context = data.entity_context;
+  return [
+    context.as_of
+      ? `Context effective on: ${context.as_of}`
+      : context.period
+        ? `Requested context period: ${context.period.start} to ${context.period.end}`
+        : "Context date unavailable",
+    ...(context.source_directory_publication_run_id
+      ? [
+          `Source directory publication: ${context.source_directory_publication_run_id}`,
+        ]
+      : []),
+    ...(context.next_cursor ? [`next_cursor: ${context.next_cursor}`] : []),
+  ].join("\n");
+}
+
 export const resolveCommand = new Command("resolve")
   .description("Resolve names to governed business objects and finance metrics")
   .argument(
     "[query]",
-    "Name or phrase to resolve; optional with --action review and omit with --action list"
+    "Name or phrase to resolve; optional with --action review and omit with --action list",
   )
   .option(
     "-t, --object-type <type>",
     "metric, customer, vendor, employee, project, legal_entity",
-    "metric"
+    "metric",
   )
-  .option("-a, --action <action>", "search, list, or review", "search")
+  .option("-a, --action <action>", "search, list, review, or context", "search")
+  .option(
+    "--context <json>",
+    "Context lookup JSON with as_of or period and optional exact identity/group/owner/party selectors",
+  )
   .option(
     "-l, --limit <n>",
     "Maximum candidates to return",
     parseLimitOption,
-    10
+    10,
   )
-  .option("--cursor <cursor>", "Opaque next_cursor from a prior review page")
-  .option("--availability-states <list>", "Comma-separated review availability states")
-  .option("--activity-evidence-states <list>", "Comma-separated lifetime activity evidence states")
-  .option("--governed-role-states <list>", "Comma-separated governed role states")
+  .option(
+    "--cursor <cursor>",
+    "Opaque next_cursor from a prior review or context page",
+  )
+  .option(
+    "--availability-states <list>",
+    "Comma-separated review availability states",
+  )
+  .option(
+    "--activity-evidence-states <list>",
+    "Comma-separated lifetime activity evidence states",
+  )
+  .option(
+    "--governed-role-states <list>",
+    "Comma-separated governed role states",
+  )
   .option("--governed-roles <list>", "Comma-separated governed business roles")
-  .option("--advisory-role-evidence-states <list>", "Comma-separated advisory role evidence states")
+  .option(
+    "--advisory-role-evidence-states <list>",
+    "Comma-separated advisory role evidence states",
+  )
   .option("--advisory-roles <list>", "Comma-separated advisory role candidates")
-  .option("--business-identity-states <list>", "Comma-separated business identity states")
+  .option(
+    "--business-identity-states <list>",
+    "Comma-separated business identity states",
+  )
   .option("--source-erps <list>", "Comma-separated source ERP identifiers")
   .option("--evidence-basis-query <value>", "Stable evidence-basis substring")
   .option(
     "--format <fmt>",
     "Output format: table, json, csv",
     parseOutputFormat,
-    "table"
+    "table",
   )
   .action(async (query: string | undefined, opts: ResolveOptions) => {
     const client = new ApiClient();
     const data = await client.post<ResolveResponse>(
       "/api/v1/resolve",
-      buildResolveRequestBody(query, opts)
+      buildResolveRequestBody(query, opts),
     );
 
     if (opts.format === "json") {
       console.log(JSON.stringify(data, null, 2));
+      return;
+    }
+
+    if (data.action === "context" && data.entity_context) {
+      console.log(formatOutput(toResolveDisplayRows(data), opts.format));
+      const contextNotice = formatEntityContextNotice(data);
+      if (contextNotice) console.log(`\n${contextNotice}`);
+      const publication = formatServingPublicationNotice(
+        data.serving_publication,
+      );
+      if (publication) console.log(`\n${publication}`);
+      console.log(`\n${data.resolution.guidance}`);
       return;
     }
 
@@ -324,7 +447,9 @@ export const resolveCommand = new Command("resolve")
     const reviewPage = formatReviewPage(data);
     if (reviewPage) console.log(`\n${reviewPage}`);
 
-    const publication = formatServingPublicationNotice(data.serving_publication);
+    const publication = formatServingPublicationNotice(
+      data.serving_publication,
+    );
     if (publication) console.log(`\n${publication}`);
 
     if (data.resolution.clarification_recommended) {

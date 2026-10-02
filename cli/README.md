@@ -269,7 +269,7 @@ capability, what it returns, and its access boundary.
 | | `pl init [name]` | Create the working folder for an organization, for you and your AI agent |
 | | `pl logout` | Remove the saved credential from this computer |
 | Discover | `pl schema <mart>` | Inspect the columns, filters, and metrics available to you |
-| | `pl resolve [query]` | Resolve a name to a governed metric, customer, vendor, employee, project, or legal entity |
+| | `pl resolve [query]` | Resolve a governed metric or business object; `--action context --object-type legal_entity --context '{"as_of":"2026-03-31"}'` reads permitted published company/group/ownership context |
 | | `pl published-status` | Show the serving publication for each mart |
 | | `pl data-quality` | Check whether enabled marts are ready to use |
 | Read | `pl report` | Income Statement, Balance Sheet, Cash Flow Statement, and Metrics Report |

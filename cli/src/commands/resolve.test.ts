@@ -4,6 +4,7 @@ import {
   buildResolveRequestBody,
   formatBlockedNotice,
   formatDirectoryCount,
+  formatEntityContextNotice,
   formatReviewPage,
   formatServingPublicationNotice,
   resolveCommand,
@@ -44,7 +45,7 @@ describe("pl resolve request", () => {
         action: "search",
         limit: 10,
       }),
-      { object_type: "vendor", action: "search", query: "acme", limit: 10 }
+      { object_type: "vendor", action: "search", query: "acme", limit: 10 },
     );
   });
 
@@ -85,7 +86,7 @@ describe("pl resolve request", () => {
           source_erps: [],
           evidence_basis_query: "1099",
         },
-      }
+      },
     );
   });
 });
@@ -113,7 +114,7 @@ describe("pl resolve policy blocks", () => {
           clarification_recommended: false,
           guidance: "Use pl resolve action=list to enumerate with tokens.",
         },
-      })
+      }),
     );
 
     assert.ok(notice);
@@ -131,7 +132,7 @@ describe("pl resolve serving publication", () => {
   it("names the approved snapshot that answered", () => {
     assert.equal(
       formatServingPublicationNotice(response().serving_publication),
-      "Business Object Directory publication: run-1, published 2026-08-15T00:00:00Z, public channel."
+      "Business Object Directory publication: run-1, published 2026-08-15T00:00:00Z, public channel.",
     );
   });
 
@@ -153,7 +154,7 @@ describe("pl resolve rows", () => {
             source_binding_count: 2,
           },
         ],
-      })
+      }),
     );
     assert.deepEqual(rows, [
       {
@@ -175,10 +176,15 @@ describe("pl resolve rows", () => {
             confidence: 0.9123,
           },
         ],
-      })
+      }),
     );
     assert.deepEqual(rows, [
-      { id: "vendor-1", label: "Acme Supply", confidence: "0.91", type: "vendor" },
+      {
+        id: "vendor-1",
+        label: "Acme Supply",
+        confidence: "0.91",
+        type: "vendor",
+      },
     ]);
   });
 
@@ -196,7 +202,7 @@ describe("pl resolve rows", () => {
             result_unit: "percentage",
           },
         ],
-      })
+      }),
     );
     assert.deepEqual(rows, [
       {
@@ -221,9 +227,9 @@ describe("pl resolve rows", () => {
             returned_object_count: 25,
             truncated: true,
           },
-        })
+        }),
       ),
-      "25 of 120 governed objects (truncated)"
+      "25 of 120 governed objects (truncated)",
     );
     assert.equal(formatDirectoryCount(response()), null);
   });
@@ -269,7 +275,7 @@ describe("pl resolve rows", () => {
     ]);
     assert.equal(
       formatReviewPage(review),
-      "1 records on this page; 1 of 626 filtered source records reviewed\nnext_cursor: plrr1.next"
+      "1 records on this page; 1 of 626 filtered source records reviewed\nnext_cursor: plrr1.next",
     );
     assert.equal(formatReviewPage(response()), null);
   });
@@ -285,5 +291,160 @@ describe("pl resolve command wiring", () => {
     assert.ok(options.includes("--advisory-roles"));
     assert.ok(options.includes("--evidence-basis-query"));
     assert.ok(options.includes("--format"));
+  });
+});
+
+describe("pl resolve entity context", () => {
+  it("forwards exact context selectors and opaque cursor without converting IDs or decimal strings", () => {
+    const context = {
+      period: { start: "2026-01-01", end: "2026-12-31" },
+      party_references: [
+        {
+          object_kind: "vendor",
+          reporting_object_id: "canonical:Vendor:00042",
+          connector_id: "connector",
+          source_erp: "quickbooks",
+        },
+      ],
+    };
+    assert.deepEqual(
+      buildResolveRequestBody(undefined, {
+        objectType: "legal_entity",
+        action: "context",
+        limit: 20,
+        context: JSON.stringify(context),
+        cursor: "context-cursor",
+      }),
+      {
+        object_type: "legal_entity",
+        action: "context",
+        limit: 20,
+        cursor: "context-cursor",
+        context,
+      },
+    );
+    assert.throws(
+      () =>
+        buildResolveRequestBody(undefined, {
+          objectType: "legal_entity",
+          action: "context",
+          limit: 20,
+          context: "{broken",
+        }),
+      SyntaxError,
+    );
+    assert.ok(
+      resolveCommand.options.some((option) => option.long === "--context"),
+    );
+  });
+
+  it("retains dated legal profiles and exact ownership fractions in human output", () => {
+    const data = response({
+      action: "context",
+      entity_context: {
+        entries: [
+          {
+            business_identity_id: "company-id",
+            display_name: "Example LLC",
+            identity_kind: "organization",
+            profiles: [
+              {
+                legal_form: "llc",
+                tax_classification: "partnership",
+                tax_regime: "us_federal_income_tax",
+                tax_jurisdiction_country_code: "US",
+                effective_from: "2026-01-01",
+                effective_to: "2026-07-01",
+              },
+              {
+                legal_form: "llc",
+                tax_classification: "s_corporation",
+                tax_regime: "us_federal_income_tax",
+                tax_jurisdiction_country_code: "US",
+                effective_from: "2026-07-01",
+                effective_to: null,
+              },
+            ],
+            owners: [
+              {
+                owner_display_name: "Owner",
+                ownership_share: "0.123456789012345678",
+                effective_from: "2026-04-01",
+                effective_to: null,
+              },
+            ],
+            memberships: [
+              {
+                group_name: "Group",
+                effective_from: "2026-05-01",
+                effective_to: "2026-12-01",
+              },
+            ],
+          },
+        ],
+        period: { start: "2026-01-01", end: "2026-12-31" },
+        source_directory_publication_run_id: "directory-run",
+        next_cursor: "continue-here",
+      },
+    });
+    const [row] = toResolveDisplayRows(data);
+    assert.equal(row.identity_id, "company-id");
+    assert.match(
+      String(row.legal_profiles),
+      /partnership .*\[2026-01-01, 2026-07-01\)/,
+    );
+    assert.match(
+      String(row.legal_profiles),
+      /s_corporation .*\[2026-07-01, open\)/,
+    );
+    assert.match(String(row.legal_profiles), /US: us_federal_income_tax/);
+    assert.equal(
+      row.owners,
+      "Owner: 0.123456789012345678 fraction [2026-04-01, open)",
+    );
+    assert.equal(row.groups, "Group [2026-05-01, 2026-12-01)");
+    assert.equal(
+      formatEntityContextNotice(data),
+      "Requested context period: 2026-01-01 to 2026-12-31\nSource directory publication: directory-run\nnext_cursor: continue-here",
+    );
+  });
+
+  it("does not invent classification or ownership and identifies context publication separately", () => {
+    const data = response({
+      action: "context",
+      entity_context: {
+        entries: [
+          {
+            business_identity_id: "id",
+            display_name: "Company",
+            identity_kind: "organization",
+            profiles: [],
+            owners: [],
+            memberships: [],
+          },
+        ],
+        as_of: "2026-10-01",
+      },
+      serving_publication: {
+        mart: "entity_context",
+        run_id: "context-run",
+        published_at: "2026-10-01T12:00:00Z",
+        release_channel: "public",
+      },
+    });
+    assert.equal(
+      toResolveDisplayRows(data)[0].legal_profiles,
+      "No dated classification recorded",
+    );
+    assert.equal(toResolveDisplayRows(data)[0].owners, "None recorded");
+    assert.equal(
+      formatEntityContextNotice(data),
+      "Context effective on: 2026-10-01",
+    );
+    assert.equal(
+      formatServingPublicationNotice(data.serving_publication),
+      "Entity Context publication: context-run, published 2026-10-01T12:00:00Z, public channel.",
+    );
+    assert.equal(formatEntityContextNotice(response()), null);
   });
 });
