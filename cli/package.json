@@ -1,0 +1,60 @@
+{
+  "name": "@pipeledger/cli",
+  "version": "0.1.2",
+  "description": "Command-line client for PipeLedger: financial statements, metrics, and General Ledger detail from NetSuite and QuickBooks Online, for AI agents and automation.",
+  "license": "Apache-2.0",
+  "author": "PipeLedger Inc",
+  "homepage": "https://pipeledger.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pipeledger/pipeledger-tools.git",
+    "directory": "cli"
+  },
+  "bugs": {
+    "email": "support@pipeledger.ai"
+  },
+  "keywords": [
+    "pipeledger",
+    "finance",
+    "financial-reporting",
+    "financial-statements",
+    "general-ledger",
+    "netsuite",
+    "quickbooks-online",
+    "ai-agents",
+    "mcp",
+    "cli"
+  ],
+  "bin": {
+    "pl": "./dist/index.js"
+  },
+  "files": [
+    "dist/index.js",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "node --import tsx src/index.ts",
+    "test": "node --import tsx --test src/**/*.test.ts",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "shared": "file:./vendor/shared",
+    "tsup": "^8.4.0",
+    "tsx": "^4.23.13",
+    "typescript": "^5"
+  }
+}

@@ -1,13 +1,13 @@
 # PipeLedger tools
 
 Financial reporting for AI agents, through a finance MCP server and a
-command-line client. Open-source tools and connection guides for
+command-line client. Client tools and connection guides for
 [PipeLedger](https://pipeledger.ai), a hosted financial data platform.
 
-This repository contains connection guides, examples, and MCP Registry
-metadata. Install the Apache-2.0-licensed CLI from npm; its development
-source tree is not hosted here. The PipeLedger service, pipeline, and ERP
-connectors remain private.
+This repository contains the source of the command-line client in
+[`cli/`](cli), connection guides, examples, and MCP Registry metadata. The
+CLI is licensed under Apache-2.0 and installs from npm. The PipeLedger
+service, pipeline, and ERP connectors remain private.
 
 PipeLedger gives AI agents governed access to financial data from NetSuite
 and QuickBooks Online through a hosted Model Context Protocol (MCP) server.
@@ -306,8 +306,24 @@ interpret the figures but cannot change them. Financial queries and reports
 use published data; management commands follow their own permissions and
 approval rules.
 
-The PipeLedger service, its data pipeline, and its ERP connectors are not
-open source.
+The CLI source is in [`cli/`](cli). The PipeLedger service, its data
+pipeline, and its ERP connectors are private and are not part of this
+repository.
+
+### Build the CLI from source
+
+```bash
+cd cli
+npm install
+npm run build
+npm test
+node dist/index.js --version
+```
+
+`cli/` is exported from PipeLedger's development repository, so its history
+here shows releases, not individual changes. Request and response types that
+belong to the service are declared without their shapes in
+`cli/types/service-contracts.d.ts`; the service validates every request.
 
 ## Documentation
 
