@@ -15,7 +15,7 @@ import {
 function response(over: Partial<ResolveResponse> = {}): ResolveResponse {
   return {
     action: "search",
-    query: "acme",
+    query: "castilian",
     catalog_version: null,
     resolver_version: "semantic-objects-v5",
     serving_publication: {
@@ -40,12 +40,12 @@ function response(over: Partial<ResolveResponse> = {}): ResolveResponse {
 describe("pl resolve request", () => {
   it("sends the same shape the MCP tool input takes", () => {
     assert.deepEqual(
-      buildResolveRequestBody("acme", {
+      buildResolveRequestBody("castilian", {
         objectType: "vendor",
         action: "search",
         limit: 10,
       }),
-      { object_type: "vendor", action: "search", query: "acme", limit: 10 },
+      { object_type: "vendor", action: "search", query: "castilian", limit: 10 },
     );
   });
 
@@ -172,7 +172,7 @@ describe("pl resolve rows", () => {
           {
             object_type: "vendor",
             id: "vendor-1",
-            label: "Acme Supply",
+            label: "Castilian Supply",
             confidence: 0.9123,
           },
         ],
@@ -181,7 +181,7 @@ describe("pl resolve rows", () => {
     assert.deepEqual(rows, [
       {
         id: "vendor-1",
-        label: "Acme Supply",
+        label: "Castilian Supply",
         confidence: "0.91",
         type: "vendor",
       },
@@ -345,7 +345,7 @@ describe("pl resolve entity context", () => {
         entries: [
           {
             business_identity_id: "company-id",
-            display_name: "Example LLC",
+            display_name: "LedgerLabs LLC",
             identity_kind: "organization",
             profiles: [
               {
