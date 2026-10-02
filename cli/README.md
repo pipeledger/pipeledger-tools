@@ -463,7 +463,7 @@ The file shape is:
   "api_url": "https://app.pipeledger.ai",
   "credential_secret": "pl_live_REPLACE_WITH_FULL_CREDENTIAL",
   "org_id": "00000000-0000-4000-8000-000000000000",
-  "org_name": "Example Organization"
+  "org_name": "LedgerLabs Inc."
 }
 ```
 
