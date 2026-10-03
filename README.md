@@ -1,5 +1,9 @@
 # PipeLedger tools
 
+[![CLI build and tests](https://github.com/pipeledger/pipeledger-tools/actions/workflows/cli.yml/badge.svg?branch=main)](https://github.com/pipeledger/pipeledger-tools/actions/workflows/cli.yml)
+[![npm version](https://img.shields.io/npm/v/@pipeledger/cli)](https://www.npmjs.com/package/@pipeledger/cli)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+
 Financial reporting for AI agents, through a finance MCP server and a
 command-line client. Client tools and connection guides for
 [PipeLedger](https://pipeledger.ai), a hosted financial data platform.
@@ -324,6 +328,10 @@ node dist/index.js --version
 here shows releases, not individual changes. Request and response types that
 belong to the service are declared without their shapes in
 `cli/types/service-contracts.d.ts`; the service validates every request.
+
+Every change to `cli/` is type-checked, built, and tested on Node.js 20, 22,
+and 24 by the [CLI workflow](.github/workflows/cli.yml). What changed in each
+release is in the [changelog](CHANGELOG.md).
 
 ## Documentation
 
