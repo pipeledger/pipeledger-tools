@@ -84,6 +84,19 @@ month.
 | Expected tools or data are missing | Confirm the connection permits them and that the data is approved and published, then start a new conversation |
 | You lost access to your authenticator | Use PipeLedger's account recovery. Reconnecting the assistant cannot bypass multi-factor authentication |
 
+## Use PipeLedger for agentic accounting
+
+This MCP connection provides governed financial context for research. A
+QuickBooks or NetSuite accounting agent can use that context alongside your
+company instructions and available source documents to prepare proposals for
+review. Supported ERP changes require a separately authorized execution
+agent; PipeLedger's MCP tools do not post to your ERP or initiate payments.
+
+See [Agentic accounting for QuickBooks Online and NetSuite](../accounting-agents/README.md)
+for the workflow, workspace layout, access boundaries and a fictional review
+packet. Connecting this MCP server does not install the accounting-agent
+package.
+
 ## More detail
 
 - [MCP server documentation](https://pipeledger.ai/docs/mcp)

@@ -28,6 +28,35 @@ The tools are free to install and licensed under Apache-2.0. Access to
 organization data requires a PipeLedger subscription and authorization from
 that organization's Owner or Admin.
 
+## Agentic accounting for QuickBooks Online and NetSuite
+
+Research the transaction, review the treatment, and keep the evidence with
+the accounting record. PipeLedger accounting agents use your published
+financial history, governed definitions and company policies to prepare
+proposals in the AI environment you choose. You approve the work; a separately
+authorized execution agent makes supported changes in QuickBooks Online or
+NetSuite and checks the result.
+
+The agent can work with your own files and connected business tools.
+PipeLedger retains selected decision context and evidence references linked
+to the relevant accounting lines. Your original contracts and source files
+stay in your environment or source systems.
+
+- [How agentic accounting works](accounting-agents/README.md): capabilities,
+  connections, an example company folder and evaluation questions.
+- [See a fictional review packet](accounting-agents/examples/review-packet.md):
+  evidence, audit support and batch-level performance.
+- [QuickBooks Accounting Agent guide](https://pipeledger.ai/guides/quickbooks-accounting-agent)
+  and [NetSuite Accounting Agent guide](https://pipeledger.ai/guides/netsuite-accounting-agent):
+  ERP-specific operations and setup.
+
+These pages describe the accounting-agent workflow. The agent implementation
+is not included in this repository, and installing the CLI or connecting the
+PipeLedger MCP server does not install an accounting agent. PipeLedger's MCP
+tools do not post to an ERP or initiate payments.
+
+## Tools and connections
+
 | Tool | Use it to | Start here |
 |---|---|---|
 | Command-line client (`pl`) | Retrieve financial statements, metrics, and General Ledger detail, inspect publication evidence, and perform permitted management actions | [Install the CLI](#install-the-cli) |
@@ -89,7 +118,8 @@ entries, and spots the ones that were booked differently. Analysis that used
 to mean exports and an afternoon of filtering becomes a question and an
 answer, with the ledger lines attached. The guidance comes from your AI
 assistant and the evidence comes from your books. You make the accounting
-decision, and your team posts it in the ERP.
+decision. Your team, or a separately authorized accounting execution agent,
+performs the supported changes in the ERP.
 
 **Compare entities on a consistent reporting basis.** Bring NetSuite and
 QuickBooks Online financial data into a shared reporting structure. Review
@@ -335,6 +365,7 @@ release is in the [changelog](CHANGELOG.md).
 
 ## Documentation
 
+- [Agentic accounting](accounting-agents/README.md): research, approval, execution and retained decision context
 - [Financial datasets](https://pipeledger.ai/docs/financial-datasets): what each dataset contains and the reports built from them
 - [Tool Guide](https://pipeledger.ai/docs/tool-guide): every capability, with inputs, returned evidence, and example prompts
 - [MCP server](https://pipeledger.ai/docs/mcp): endpoint, authentication, and permission boundaries
