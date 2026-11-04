@@ -20,10 +20,10 @@ package. This is a snapshot of those records at the export cutoff, rather than
 another agent installation or a replacement for the working history.
 
 The export destination is configurable. This example places the package under
-the company's `Accounting Agent/reports/` folder, matching the workspace diagram:
+the company's `accounting_agent/reports/` folder, matching the workspace diagram:
 
 ```text
-Your company/Accounting Agent/reports/accounting-agent-audit-package/
+Your company/accounting_agent/reports/accounting-agent-audit-package/
 ├── README.md
 ├── manifest.json
 ├── records/

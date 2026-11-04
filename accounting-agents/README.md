@@ -150,12 +150,16 @@ This is the company workspace where the agent works over time. The layout is
 illustrative; the installed package supplies its actual working paths and setup
 instructions.
 
+The technical folder name is `accounting_agent/`, in lowercase with an underscore.
+**Accounting Agent** remains the name used in prose. Existing installations
+should adopt the folder name through a coordinated package update.
+
 ```text
 Your company/
 ├── AGENTS.md              Company instructions
 ├── notes/                 Approved decisions
 ├── reference/             Policies and supporting references
-└── Accounting Agent/
+└── accounting_agent/
     ├── config/            Protected connections and company configuration
     ├── product/           Installed, versioned agent software
     ├── work/              Review inputs and working material
