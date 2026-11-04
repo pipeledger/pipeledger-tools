@@ -86,6 +86,7 @@ month.
 
 ## More detail
 
+- [Agentic Accounting](../accounting-agents/README.md): how accounting agents use PipeLedger's financial context through MCP or CLI
 - [MCP server documentation](https://pipeledger.ai/docs/mcp)
 - [OAuth connection guide](https://pipeledger.ai/docs/oauth-mcp-setup)
 - [Tool Guide](https://pipeledger.ai/docs/tool-guide)

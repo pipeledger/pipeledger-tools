@@ -1,0 +1,171 @@
+# What an accounting-agent run actually produces
+
+This walkthrough follows PipeLedger's current QuickBooks audit-package exporter.
+The purchase, amount and references in the displayed proposal are fictional.
+The artifact names, status boundaries, approval wording and validation behavior
+follow the implemented package structure. Nothing below is a benchmark or a
+claim that a customer transaction occurred.
+
+NetSuite uses the shared proposal, approval, execution and verification
+lifecycle, but this page does not claim that every installed NetSuite deployment
+currently emits this identical portable package. Confirm the installed exporter
+and commissioned native operation during deployment.
+
+## From the company folder to an audit package
+
+The [company workspace](../README.md#example-company-folder) is where the agent
+keeps its instructions, configuration, working material and operational history.
+When you export selected work, the exporter creates a separate, portable audit
+package. This is a snapshot of those records at the export cutoff, rather than
+another agent installation or a replacement for the working history.
+
+The export destination is configurable. This example places the package under
+the company's `accounting_agent/reports/` folder, matching the workspace diagram:
+
+```text
+Your company/accounting_agent/reports/accounting-agent-audit-package/
+├── README.md
+├── manifest.json
+├── records/
+│   ├── proposals.ndjson
+│   └── events.ndjson
+├── details/
+│   └── P0001.md
+├── evidence/
+│   └── ... retained files, when collection is permitted
+└── reports/
+    ├── accounting-agent-activity.xlsx
+    └── completion-receipt.md
+```
+
+Everything below that path belongs to the exported package. Its own `reports/`
+folder contains the workbook and receipt; `records/` contains the selected
+proposal and event records. Keep the package directory together so workbook
+links to details and retained evidence continue to work when it is moved or
+shared.
+
+| Artifact | What a reviewer can establish |
+|---|---|
+| `manifest.json` | Package identity, organization, ERP, exporter identity, selection basis, completeness boundary, evidence cutoff, record counts, sequence omissions and the size and SHA-256 of every inventoried package file |
+| `records/proposals.ndjson` | Immutable proposal versions, source ERP and case identity, supersession lineage, frozen payload and payload/record hashes |
+| `records/events.ndjson` | Ordered proposal, approval, authorization, dispatch, outcome, verification and evidence-retention events, with actor and assurance metadata |
+| `details/P0001.md` | Human-readable source identity, full source text, dimensions, economic-description destination, posting model, review notes, approval binding, attempts and native result reference |
+| `Evidence Index` worksheet | Evidence availability, custody, original locator, package location, observed/captured times, hash and byte count |
+| `completion-receipt.md` | Action-level execution, posting verification, bank matching, statement reconciliation, PipeLedger delivery and the next unresolved action |
+
+The manifest states whether the selection is explicit or complete only within a
+declared workflow boundary. It does not turn a selected batch into a claim about
+the whole company.
+
+## What the controller approves
+
+The visible proposal is generated from the same frozen proposal record used by
+the execution controls. Source amount, source text and accounting disposition
+are not reconstructed from the completion result.
+
+This 14-column table is the proposal review presented before execution. The
+exported workbook's **Agent Activity** sheet instead follows the requested
+actions, attempts and outcomes. Proposal details and evidence references let a
+reviewer trace those results back to the accounting decision.
+
+| Proposal ID | Date | Event | Counterparty | Source account | Source amount | Source text | Proposed action | Distribution account | Key dimensions | Economic description | Accounting readiness | Execution capability | Approval status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| P0001 | 2026-11-02 | NVIDIA GPU purchase | Vendor: Vertex Computing | Business checking (4821) | -6,800.00 USD | VERTEX COMPUTING GPU INV-2048 | Categorize imported transaction | 6,800.00 USD — Computer equipment | Project: Kanoo; Geographical segment: North America; Functional segment: Engineering; Business segment: Cloud Computing | NVIDIA GPU for the Kanoo cloud-computing workstation; capitalized under the approved equipment policy | complete | commissioned | pending |
+
+The supplier invoice identifies the GPU and its intended use. The company's
+approved equipment policy supports recording the purchase as a fixed asset.
+Depreciation would be a separate accounting proposal; it is not included in
+this bank-transaction categorization.
+
+**To record execution approval, reply exactly:**
+
+`Approve P0001 for execution.`
+
+That sentence authorizes the complete displayed action graph for this immutable
+proposal version. Accounting acceptance without dispatch authority uses different
+wording. A change to the account, counterparty, dimensions, description or native
+action creates a superseding proposal and requires a new decision.
+
+The detail record beneath the row retains:
+
+- the proposal hash and version;
+- source ERP identity, source version, observation cutoff and full source text;
+- Customer and Project as separate relationships;
+- the economic description and its intended native destination and persistence;
+- the complete Debit/Credit posting model when posting is expected;
+- Evidence, Rationale, Decision needed, Execution dependency and References;
+- the exact decision, actor, time and assurance basis; and
+- every requested action, attempt, native result reference and verification
+  outcome.
+
+## What happens after approval
+
+The portable event record uses distinct event types rather than one generic
+"completed" status:
+
+```text
+proposal_recorded
+  → approval_recorded
+  → authorization_recorded
+  → dispatch_intent_recorded
+  → execution_dispatched
+  → execution_succeeded | execution_failed | execution_uncertain
+  → verification_recorded | corroboration_recorded
+```
+
+Authorization binds the proposal and requested action before dispatch. A provider
+response is not treated as sufficient verification. The adapter reads the native
+record back and checks the fields and accounting effects required for that record
+type. The completion receipt keeps these outcomes separate:
+
+| Outcome | Why it remains separate |
+|---|---|
+| Execution result | Whether the requested native action was delivered and reached a terminal result |
+| Posting verification | Whether native fields and posting effects agree with the approved proposal |
+| Bank matching | Whether the imported bank or credit-card item was matched to the verified record |
+| Statement reconciliation | Whether the statement population and balance were reconciled through the required workflow |
+| PipeLedger delivery | Whether eligible context was delivered and acknowledged; this is distinct from later matching and publication |
+
+For example, a posting may be verified while bank matching is still pending. The
+receipt then directs the operator to continue matching the existing posting, not
+to recreate it.
+
+## How the package exposes failure and uncertainty
+
+The package is designed to preserve awkward outcomes rather than smooth them into
+a success metric:
+
+- Missing local evidence is indexed as **Missing**. A source-system locator can
+  remain **Reference only** without pretending that bytes were retained.
+- A changed proposal remains in the lineage as **superseded**; the replacement
+  does not rewrite the first recommendation or approval history.
+- A timeout or ambiguous provider response remains **execution uncertain** until
+  read-only reconciliation establishes whether a native record exists. It is not
+  silently converted into a clean first-attempt success.
+- An approved but undispatched action remains **unattempted**.
+- Posting verification, matching, statement reconciliation and context delivery
+  may disagree and remain independently visible.
+- Missing measurements are reported as **Not measured**, not zero.
+- Successful execution is not labeled accounting accuracy. Accuracy requires a
+  separately recorded, conclusive independent review of the approved treatment.
+
+## A practical evaluation
+
+Ask PipeLedger to produce a read-only review from your own published history
+before enabling writes. For any operation you intend to commission, choose a
+representative sandbox canary and verify that you can trace:
+
+1. the controller row to its immutable proposal record and evidence references;
+2. the exact approval to its authorization event;
+3. the authorization to one dispatch attempt;
+4. the native result reference to record-specific read-back and posting evidence;
+5. every outstanding match, reconciliation or delivery step to the completion
+   receipt; and
+6. every packaged file to the manifest inventory and hash.
+
+That exercise tests the system itself. It does not rely on fictional completion
+rates or a curated claim about how quickly a batch was processed.
+
+[Back to the accounting-agent overview](../README.md) ·
+[QuickBooks guide](https://pipeledger.ai/guides/quickbooks-accounting-agent) ·
+[NetSuite guide](https://pipeledger.ai/guides/netsuite-accounting-agent)
