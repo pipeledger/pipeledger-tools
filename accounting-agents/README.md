@@ -146,8 +146,8 @@ control those choices.
 
 ### Example company folder
 
-This is an illustrative customer workspace, not a directory of source code
-published in this repository. The installed package supplies its own setup
+This is the company workspace where the agent works over time. The layout is
+illustrative; the installed package supplies its actual working paths and setup
 instructions.
 
 ```text
@@ -162,7 +162,15 @@ Your company/
     ├── runtime/           Durable operational history and state
     ├── evidence/          Retained supporting evidence
     └── reports/           Review reports and exported audit packages
+        └── accounting-agent-audit-package/  One exported snapshot
 ```
+
+An audit package is a portable snapshot of selected work from this workspace.
+The export destination is configurable; placing it under `reports/` is the
+example used here. The [audit-package walkthrough](examples/review-packet.md#from-the-company-folder-to-an-audit-package)
+opens that same `accounting-agent-audit-package/` folder and shows its contents.
+Its exported records preserve the selected history at the export cutoff; the
+agent continues to keep its operational history in the workspace.
 
 Keep credentials in protected configuration, outside public repositories and
 chat messages. `runtime/` is operational history, not a disposable cache.

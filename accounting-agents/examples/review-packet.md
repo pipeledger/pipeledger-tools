@@ -11,13 +11,19 @@ lifecycle, but this page does not claim that every installed NetSuite deployment
 currently emits this identical portable package. Confirm the installed exporter
 and commissioned native operation during deployment.
 
-## Start with the package, not a success story
+## From the company folder to an audit package
 
-An exported run is a relocatable directory, not a prose summary assembled after
-the fact:
+The [company workspace](../README.md#example-company-folder) is where the agent
+keeps its instructions, configuration, working material and operational history.
+When you export selected work, the exporter creates a separate, portable audit
+package. This is a snapshot of those records at the export cutoff, rather than
+another agent installation or a replacement for the working history.
+
+The export destination is configurable. This example places the package under
+the company's `Accounting Agent/reports/` folder, matching the workspace diagram:
 
 ```text
-accounting-agent-audit-package/
+Your company/Accounting Agent/reports/accounting-agent-audit-package/
 ├── README.md
 ├── manifest.json
 ├── records/
@@ -32,8 +38,11 @@ accounting-agent-audit-package/
     └── completion-receipt.md
 ```
 
-The complete directory stays together so links from the workbook to proposal
-details and evidence remain resolvable after relocation.
+Everything below that path belongs to the exported package. Its own `reports/`
+folder contains the workbook and receipt; `records/` contains the selected
+proposal and event records. Keep the package directory together so workbook
+links to details and retained evidence continue to work when it is moved or
+shared.
 
 | Artifact | What a reviewer can establish |
 |---|---|
@@ -53,6 +62,11 @@ the whole company.
 The visible proposal is generated from the same frozen proposal record used by
 the execution controls. Source amount, source text and accounting disposition
 are not reconstructed from the completion result.
+
+This 14-column table is the proposal review presented before execution. The
+exported workbook's **Agent Activity** sheet instead follows the requested
+actions, attempts and outcomes. Proposal details and evidence references let a
+reviewer trace those results back to the accounting decision.
 
 | Proposal ID | Date | Event | Counterparty | Source account | Source amount | Source text | Proposed action | Distribution account | Key dimensions | Economic description | Accounting readiness | Execution capability | Approval status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
