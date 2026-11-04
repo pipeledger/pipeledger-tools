@@ -93,9 +93,9 @@ review. Supported ERP changes require a separately authorized execution
 agent; PipeLedger's MCP tools do not post to your ERP or initiate payments.
 
 See [Agentic accounting for QuickBooks Online and NetSuite](../accounting-agents/README.md)
-for the workflow, workspace layout, access boundaries and a fictional review
-packet. Connecting this MCP server does not install the accounting-agent
-package.
+for the workflow, workspace layout, access boundaries and a current QuickBooks
+audit-package walkthrough. Connecting this MCP server does not install the
+accounting-agent package.
 
 ## More detail
 

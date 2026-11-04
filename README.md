@@ -30,12 +30,12 @@ that organization's Owner or Admin.
 
 ## Agentic accounting for QuickBooks Online and NetSuite
 
-Research the transaction, review the treatment, and keep the evidence with
-the accounting record. PipeLedger accounting agents use your published
-financial history, governed definitions and company policies to prepare
-proposals in the AI environment you choose. You approve the work; a separately
-authorized execution agent makes supported changes in QuickBooks Online or
-NetSuite and checks the result.
+Turn accounting work into an evidence-backed decision instead of an opaque
+ERP write. PipeLedger accounting agents use your published financial history,
+governed definitions, company policies and authorized source evidence to
+prepare reviewable proposals in the AI environment you choose. You approve an
+exact proposal; a separately authorized execution agent makes only supported
+changes in QuickBooks Online or NetSuite, then checks the native result.
 
 The agent can work with your own files and connected business tools.
 PipeLedger retains selected decision context and evidence references linked
@@ -44,8 +44,9 @@ stay in your environment or source systems.
 
 - [How agentic accounting works](accounting-agents/README.md): capabilities,
   connections, an example company folder and evaluation questions.
-- [See a fictional review packet](accounting-agents/examples/review-packet.md):
-  evidence, audit support and batch-level performance.
+- [Inspect a current audit-package implementation](accounting-agents/examples/review-packet.md):
+  the proposal, event trail, evidence index, completion receipt and package
+  boundaries produced by the QuickBooks exporter.
 - [QuickBooks Accounting Agent guide](https://pipeledger.ai/guides/quickbooks-accounting-agent)
   and [NetSuite Accounting Agent guide](https://pipeledger.ai/guides/netsuite-accounting-agent):
   ERP-specific operations and setup.
