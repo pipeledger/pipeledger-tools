@@ -1,10 +1,10 @@
 # What an accounting-agent run actually produces
 
-This walkthrough follows PipeLedger's current QuickBooks audit-package exporter
-and connector-neutral v2 package contract. Names, IDs, source text and amounts in
-the displayed proposal are sanitized, but the artifact names, status boundaries,
-approval wording and validation behavior are the real implemented shapes.
-Nothing below is a benchmark or a claim that a customer transaction occurred.
+This walkthrough follows PipeLedger's current QuickBooks audit-package exporter.
+The purchase, amount and references in the displayed proposal are fictional.
+The artifact names, status boundaries, approval wording and validation behavior
+follow the implemented package structure. Nothing below is a benchmark or a
+claim that a customer transaction occurred.
 
 NetSuite uses the shared proposal, approval, execution and verification
 lifecycle, but this page does not claim that every installed NetSuite deployment
@@ -37,7 +37,7 @@ details and evidence remain resolvable after relocation.
 
 | Artifact | What a reviewer can establish |
 |---|---|
-| `manifest.json` | Package identity, organization, ERP, exporter version, selection basis, completeness boundary, evidence cutoff, record counts, sequence omissions and the size and SHA-256 of every inventoried package file |
+| `manifest.json` | Package identity, organization, ERP, exporter identity, selection basis, completeness boundary, evidence cutoff, record counts, sequence omissions and the size and SHA-256 of every inventoried package file |
 | `records/proposals.ndjson` | Immutable proposal versions, source ERP and case identity, supersession lineage, frozen payload and payload/record hashes |
 | `records/events.ndjson` | Ordered proposal, approval, authorization, dispatch, outcome, verification and evidence-retention events, with actor and assurance metadata |
 | `details/P0001.md` | Human-readable source identity, full source text, dimensions, economic-description destination, posting model, review notes, approval binding, attempts and native result reference |
@@ -54,9 +54,14 @@ The visible proposal is generated from the same frozen proposal record used by
 the execution controls. Source amount, source text and accounting disposition
 are not reconstructed from the completion result.
 
-| Proposal ID | Date | Event | Counterparty | Source account | Source amount | Source text&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Proposed action | Distribution account | Key dimensions | Economic description | Accounting readiness | Execution capability | Approval status |
+| Proposal ID | Date | Event | Counterparty | Source account | Source amount | Source text | Proposed action | Distribution account | Key dimensions | Economic description | Accounting readiness | Execution capability | Approval status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| P0001 | 2026-10-01 | Office-supply purchase | Vendor: Office Supply Store (sanitized) | QuickBooks Operating | -125.40 USD | OFFICE SUPPLY STORE 4431 | Categorize imported transaction | 125.40 USD — Office supplies | Project: Not assigned; Geographical segment: West; Functional segment: Operations; Business segment: Design services | Office supplies for design studio | complete | commissioned | pending |
+| P0001 | 2026-11-02 | NVIDIA GPU purchase | Vendor: Vertex Computing | Business checking (4821) | -6,800.00 USD | VERTEX COMPUTING GPU INV-2048 | Categorize imported transaction | 6,800.00 USD — Computer equipment | Project: Forecasting platform; Geographical segment: North America; Functional segment: Engineering; Business segment: Software | NVIDIA GPU for the forecasting-platform workstation; capitalized under the approved equipment policy | complete | commissioned | pending |
+
+The supplier invoice identifies the GPU and its intended use. The company's
+approved equipment policy supports recording the purchase as a fixed asset.
+Depreciation would be a separate accounting proposal; it is not included in
+this bank-transaction categorization.
 
 **To record execution approval, reply exactly:**
 
