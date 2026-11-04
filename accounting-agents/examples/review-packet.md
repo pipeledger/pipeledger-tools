@@ -56,7 +56,7 @@ are not reconstructed from the completion result.
 
 | Proposal ID | Date | Event | Counterparty | Source account | Source amount | Source text | Proposed action | Distribution account | Key dimensions | Economic description | Accounting readiness | Execution capability | Approval status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| P0001 | 2026-11-02 | NVIDIA GPU purchase | Vendor: Vertex Computing | Business checking (4821) | -6,800.00 USD | VERTEX COMPUTING GPU INV-2048 | Categorize imported transaction | 6,800.00 USD — Computer equipment | Project: Forecasting platform; Geographical segment: North America; Functional segment: Engineering; Business segment: Software | NVIDIA GPU for the forecasting-platform workstation; capitalized under the approved equipment policy | complete | commissioned | pending |
+| P0001 | 2026-11-02 | NVIDIA GPU purchase | Vendor: Vertex Computing | Business checking (4821) | -6,800.00 USD | VERTEX COMPUTING GPU INV-2048 | Categorize imported transaction | 6,800.00 USD — Computer equipment | Project: Kanoo; Geographical segment: North America; Functional segment: Engineering; Business segment: Cloud Computing | NVIDIA GPU for the Kanoo cloud-computing workstation; capitalized under the approved equipment policy | complete | commissioned | pending |
 
 The supplier invoice identifies the GPU and its intended use. The company's
 approved equipment policy supports recording the purchase as a fixed asset.

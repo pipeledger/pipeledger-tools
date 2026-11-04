@@ -12,14 +12,14 @@ and the resulting native record is checked against what was approved.
 [NetSuite guide](https://pipeledger.ai/guides/netsuite-accounting-agent) ·
 [QuickBooks audit-package walkthrough](examples/review-packet.md)
 
-## Who is PipeLedger accounting for?
+## Who is PipeLedger Agentic Accounting for?
 
-PipeLedger is for CFOs and controllers who want to improve the quality and
-consistency of their QuickBooks Online or NetSuite accounting, with the query
-speed of a financial data warehouse behind their agents. Research runs against
-prepared financial data across connected systems, keeping the workflow
-responsive as agents move between accounting history, business identities and
-reporting definitions.
+PipeLedger Agentic Accounting is for CFOs, controllers and accounting managers
+who want to improve the quality and consistency of their QuickBooks Online or
+NetSuite accounting, with the query speed of a financial data warehouse behind
+their agents. Research runs against prepared financial data across connected
+systems, keeping the workflow responsive as agents move between accounting
+history, business identities and reporting definitions.
 
 PipeLedger supplies accounting-specific instructions for researching a
 treatment, preparing a proposal, recording approval, authorizing execution and
@@ -46,6 +46,17 @@ It brings the same company instructions, accounting policies and approved
 decisions to each new transaction. It compares repeat transactions with
 your accounting history and makes the proposed account, counterparty,
 dimensions and economic description visible before you approve them.
+
+You can also configure a **specialized accounting memo** alongside the general
+economic description. For revenue arrangements, the memo can document
+performance obligations, delivery and acceptance terms, service periods,
+payment conditions and the judgments supporting revenue recognition, with
+references to the relevant contract clauses and company policy. This gives
+accounting managers, controllers and auditors a clearer basis for reviewing the
+treatment, including for audits conducted under
+[PCAOB standards](https://pcaobus.org/oversight/standards/auditing-standards/details/AS1215).
+The memo can remain in your workspace, with only selected, approved context
+returned to PipeLedger.
 
 | Stage | What you get |
 |---|---|
