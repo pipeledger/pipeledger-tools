@@ -234,10 +234,20 @@ or their CLI equivalents. Each tool answers a different research question:
 |---|---|---|
 | Which company am I working in, and what may I see? | [`pl_whoami`](https://pipeledger.ai/docs/tool-guide#pl_whoami) | Confirms the connection's identity, tools, data scope and whether ledger access is complete |
 | Which fields and filters are available for this investigation? | [`pl_schema`](https://pipeledger.ai/docs/tool-guide#pl_schema) | Describes the authorized datasets and fields before the agent builds a query |
-| Which supplier, customer, project or metric does this refer to? | [`pl_resolve`](https://pipeledger.ai/docs/tool-guide#pl_resolve) | Resolves permitted identities and definitions, retaining source references and ambiguity for review |
+| What do these financial terms and business references mean, and how should they guide the investigation? | [`pl_resolve`](https://pipeledger.ai/docs/tool-guide#pl_resolve) | Connects financial language to governed metrics, report types and analysis guidance; identifies business objects, approved roles and relationships, with source evidence and guidance for the next permitted query or report |
 | How is this financial measure defined? | [`pl_catalog`](https://pipeledger.ai/docs/tool-guide#pl_catalog) | Retrieves governed definitions so the agent can use the company's reporting meaning consistently |
 | What happened in the books, and how were similar entries treated? | [`pl_query`](https://pipeledger.ai/docs/tool-guide#pl_query) | Retrieves targeted published accounting history, account classifications and permitted financial detail |
 | How does the booked activity appear in reporting, and what supports a figure? | [`pl_report`](https://pipeledger.ai/docs/tool-guide#pl_report), [`pl_drilldown`](https://pipeledger.ai/docs/tool-guide#pl_drilldown) | Retrieves financial statements or a selected Metrics Report and traces supported figures to authorized detail |
+
+To turn a memo or bank text into useful accounting guidance, the agent combines
+these tools. It uses `pl_resolve` to connect names and financial terms to
+business objects, approved business roles, metric definitions and the
+appropriate reporting or analysis approach. When the clue is transaction text,
+an item description or a document reference, `pl_schema` and `pl_query` help
+find the relevant published activity; the agent can then resolve the returned
+business-object references. The resulting evidence guides the proposed
+treatment, with ambiguous matches or missing role assertions kept visible for
+review.
 
 Built-in proposal preparation uses identity checks, counterparty/project
 resolution and targeted history and chart-of-accounts queries. The additional
